@@ -1,8 +1,6 @@
 package Exemplos;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
@@ -136,6 +134,85 @@ public class ExercicioStreamAPI {
         listInteiros.removeIf(integer->integer % 2 != 0);
         System.out.println(listInteiros);
 
+        System.out.println("Ignore os 3 primeiros elementos da lista e imprima o restante: ");
+        System.out.println(numerosAleatorios);
+        List<String> ignore3primeiroselementos = numerosAleatorios.stream()
+                .skip(3).collect(Collectors.toList());
+        System.out.println(ignore3primeiroselementos);
+
+        System.out.println("Retirando os números repetidos da lista, quantos números ficam? ");
+        Set<String> listaSet = numerosAleatorios.stream()
+                .collect(Collectors.toSet());
+        System.out.println(listaSet.size());
+        System.out.println(listaSet);
+
+        //outra forma com stream
+        System.out.println("Retirando os números repetidos da lista, quantos números ficam? ");
+        List<Integer> numerosAleatoriosInteger =  numerosAleatorios.stream()
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+        long countNumUnicos = numerosAleatoriosInteger.stream()
+                .distinct()
+                .count();
+        System.out.println("Qtde de números não repetidos: " + countNumUnicos);
+
+        System.out.println("Mostre o menor valor da lista");
+        numerosAleatoriosInteger.stream()
+                .mapToInt(new ToIntFunction<Integer>() {
+                    @Override
+                    public int applyAsInt(Integer value) {
+                        return value.intValue();
+                    }
+                })
+                .min()
+                .ifPresent(System.out::println);
+
+        System.out.println("(Lambda) Mostre o menor valor da lista");
+        numerosAleatoriosInteger.stream()
+                .mapToInt(value->value.intValue())
+                .min()
+                .ifPresent(System.out::println);
+
+        System.out.println("(Method Reference) Mostre o menor valor da lista");
+        numerosAleatoriosInteger.stream()
+                .mapToInt(Integer::intValue)
+                .min()
+                .ifPresent(System.out::println);
+
+        System.out.println("Mostre o maior valor da lista");
+        numerosAleatoriosInteger.stream()
+                .mapToInt(Integer::intValue)
+                .max()
+                .ifPresent(System.out::println);
+
+        System.out.println("Pegue apenas os números ímpares e some. ");
+        int soma = numerosAleatoriosInteger.stream()
+                .mapToInt(Integer::intValue)
+                .filter(value->value % 2 != 0)
+                .sum();
+        System.out.println(numerosAleatoriosInteger);
+        System.out.println("Soma dos números ímpares: "+soma);
+
+        System.out.println("Lista na ordem numérica: ");
+        List<Integer> listOrdemNumerica = numerosAleatoriosInteger.stream()
+                .sorted(Comparator.naturalOrder())
+                .collect(Collectors.toList());
+        System.out.println(listOrdemNumerica);
+
+        //collect(Collectors.groupingBy(new Function())
+        System.out.println("Agrupe os valores ímpares múltiplos de 3 ou de 5: ");
+        Map<Boolean, List<Integer>> collectNumerosMultiplosDe3e5 = numerosAleatoriosInteger.stream()
+                .collect(Collectors.groupingBy(i->(i % 3 == 0 || i % 5 == 0)));
+        for (Map.Entry<Boolean, List<Integer>> cnm3e5: collectNumerosMultiplosDe3e5.entrySet()) {
+            if(cnm3e5.getKey() == true) System.out.println(cnm3e5.getValue());
+        }
+
+        //prova
+        List<Character> c = Arrays.asList('c', 'm', 'l');
+        System.out.println(c);
+
+        List<String> numeros = List.of("1", "2", "5", "3");
+        System.out.println(numeros.stream().mapToInt(Integer::parseInt).average());
 
 
     }
