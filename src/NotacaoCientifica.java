@@ -9,45 +9,50 @@ public class NotacaoCientifica {
         int aux, ponto, cont = 0;
         String expoente = "";
         String aux2="", aux3, decimal = "", nc = "";
-        System.out.println(numeroString);
-        System.out.println(numero);
 
         ponto = numeroString.indexOf(".");
         aux2 = numeroString.substring((ponto + 1),numeroString.length());
-        System.out.println(aux2);
-
         aux = aux2.indexOf("E");
         if(aux != -1){
             if(aux < 5){
                 expoente = aux2.substring((aux+1),aux2.length());
-                System.out.println(expoente);
                 if(numero>0) {
                     nc = "+" + numeroString.substring(0,ponto)+".";
                     aux2 = aux2.substring(0,aux);
                     if(expoente.length()>1){
-                        nc += aux2+"000E+"+expoente;
+                        if(expoente.substring(0,1).equals("-")){
+                            nc += aux2+"000E"+expoente;
+                        }else{
+                            nc += aux2+"000E+"+expoente;
+                        }
                     }else{
                         nc += aux2+"000E+0"+expoente;
                     }
-
                 }else{
                     nc = numeroString.substring(0,ponto)+".";
                     if(Integer.parseInt(nc.substring(1,2))==0){
                         aux2 = aux2.substring(0,aux);
                         if(expoente.length()>1){
-                            nc += aux2+"000E-"+expoente;
+                            if(expoente.substring(0,1).equals("-")){
+                                nc += aux2+"000E"+expoente;
+                            }else{
+                                nc += aux2+"000E+"+expoente;
+                            }
                         }else{
                             nc += aux2+"000E-0"+expoente;
                         }
                     }else{
                         aux2 = aux2.substring(0,aux);
                         if(expoente.length()>1){
-                            nc += aux2+"000E+"+expoente;
+                            if(expoente.substring(0,1).equals("-")){
+                                nc += aux2+"000E"+expoente;
+                            }else{
+                                nc += aux2+"000E+"+expoente;
+                            }
                         }else{
                             nc += aux2+"000E+0"+expoente;
                         }
                     }
-
                 }
             }else{
                 if(numero>0) {
@@ -55,7 +60,6 @@ public class NotacaoCientifica {
                     if(aux2.length()>4){
                         aux = aux2.indexOf("E");
                         expoente = aux2.substring((aux+1),aux2.length());
-                        System.out.println(expoente);
                         if(aux != -1){
                             if(aux < 9){
                                 nc += aux2.substring(0, 4) + "E+0" + expoente;
@@ -126,8 +130,8 @@ public class NotacaoCientifica {
                             int pu = Integer.parseInt(aux2.substring(3, 4));
                             if(u > 5){
                                 pu++;
-                                aux2 = aux2.substring(0,3)+pu;
                             }
+                            aux2 = aux2.substring(0,3)+pu;
                             nc += aux2.substring(0, 4) + "E+00";
                         }
                     }else{
@@ -140,36 +144,63 @@ public class NotacaoCientifica {
                     }
                 }else {
                     nc = numeroString.substring(0,ponto)+".";
-                    if(aux2.length()>4){
-                        aux = aux2.indexOf("E");
-                        if(aux != -1){
-                            if(aux < 9){
-                                nc += aux2.substring(0, 4) + "E-0" + aux2.substring((aux+1), (aux + 2));
+                    if(nc.equals("-0.")){
+                        if(aux2.length()>4){
+                            aux = aux2.indexOf("E");
+                            if(aux != -1){
+                                if(aux < 9){
+                                    nc += aux2.substring(0, 4) + "E-0" + aux2.substring((aux+1), (aux + 2));
+                                }else{
+                                    nc += aux2.substring(0, 4) + "E-"  +aux2.substring(aux, aux2.length());
+                                }
                             }else{
-                                nc += aux2.substring(0, 4) + "E-"  +aux2.substring(aux, aux2.length());
+                                int u = Integer.parseInt(aux2.substring(4, 5));
+                                int pu = Integer.parseInt(aux2.substring(3, 4));
+                                if(u > 5){
+                                    pu++;
+                                }
+                                aux2 = aux2.substring(0,3)+pu;
+                                nc += aux2.substring(0, 4) + "E-00";
                             }
                         }else{
-                            int u = Integer.parseInt(aux2.substring(4, 5));
-                            int pu = Integer.parseInt(aux2.substring(3, 4));
-                            if(u > 5){
-                                pu++;
-                                aux2 = aux2.substring(0,3)+pu;
+                            aux = aux2.indexOf("E");
+                            if(aux != -1){
+                                nc += aux2.substring(0, 4) + "E+0" + aux2.substring((aux2.length()-1), aux2.length());
+                            }else{
+                                nc = numeroString;
                             }
-                            nc += aux2.substring(0, 4) + "E-00";
                         }
                     }else{
-                        aux = aux2.indexOf("E");
-                        if(aux != -1){
-                            nc += aux2.substring(0, 4) + "E+0" + aux2.substring((aux2.length()-1), aux2.length());
+                        if(aux2.length()>4){
+                            aux = aux2.indexOf("E");
+                            if(aux != -1){
+                                if(aux < 9){
+                                    nc += aux2.substring(0, 4) + "E+0" + aux2.substring((aux+1), (aux + 2));
+                                }else{
+                                    nc += aux2.substring(0, 4) + "E+"  +aux2.substring(aux, aux2.length());
+                                }
+                            }else{
+                                int u = Integer.parseInt(aux2.substring(4, 5));
+                                int pu = Integer.parseInt(aux2.substring(3, 4));
+                                if(u > 5){
+                                    pu++;
+                                }
+                                aux2 = aux2.substring(0,3)+pu;
+                                nc += aux2.substring(0, 4) + "E+00";
+                            }
                         }else{
-                            nc = numeroString;
+                            aux = aux2.indexOf("E");
+                            if(aux != -1){
+                                nc += aux2.substring(0, 4) + "E+0" + aux2.substring((aux2.length()-1), aux2.length());
+                            }else{
+                                nc = numeroString;
+                            }
                         }
                     }
                 }
             }else{
                 nc = numeroString;
             }
-
         }
     System.out.println(nc);
     }
