@@ -47,7 +47,6 @@ public class Desafio02 {
 
         System.out.println("MOEDAS:");
 
-
         moeda = 100;
         quociente = resto / moeda;
         System.out.println(quociente + " moeda(s) de R$ 1.00");
@@ -57,8 +56,6 @@ public class Desafio02 {
         quociente = resto / moeda;
         System.out.println(quociente + " moeda(s) de R$ 0.50");
         resto = resto % moeda;
-
-        //continue o seu código aqui
 
         moeda = 25;
         quociente = resto / moeda;
